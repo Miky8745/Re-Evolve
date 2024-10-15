@@ -27,6 +27,7 @@ public class Render {
     private SceneRender sceneRender;
     private ShadowRender shadowRender;
     private SkyBoxRender skyBoxRender;
+    private CustomGUIRender customGUIRender;
 
     public Render(Window window) {
         GL.createCapabilities();
@@ -45,6 +46,7 @@ public class Render {
         animationRender = new AnimationRender();
         gBuffer = new GBuffer(window);
         renderBuffers = new RenderBuffers();
+        customGUIRender = new CustomGUIRender();
     }
 
     public void cleanup() {
@@ -56,6 +58,7 @@ public class Render {
         animationRender.cleanup();
         gBuffer.cleanUp();
         renderBuffers.cleanup();
+        customGUIRender.cleanup();
     }
 
     private void lightRenderFinish() {
@@ -83,6 +86,7 @@ public class Render {
         skyBoxRender.render(scene);
         lightRenderFinish();
         guiRender.render(scene);
+        customGUIRender.renderAll();
     }
 
     public void resize(int width, int height) {

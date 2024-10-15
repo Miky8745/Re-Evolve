@@ -1,7 +1,8 @@
-package com.nsg.evolve.main;
+package com.nsg.evolve.engine.demo;
 
 import com.nsg.evolve.engine.Engine;
 import com.nsg.evolve.engine.Window;
+import com.nsg.evolve.engine.gui.QuadGenerator;
 import com.nsg.evolve.engine.input.MouseInput;
 import com.nsg.evolve.engine.interfaces.IAppLogic;
 import com.nsg.evolve.engine.render.Render;
@@ -55,6 +56,8 @@ public class Main implements IAppLogic {
     @Override
     public void init(Window window, Scene scene, Render render) {
         summonTerrain(scene);
+
+        QuadGenerator.registeredQuads.add(new QuadGenerator.Quad(new Vector2f(0,0), new Vector2f(1,-1), 1));
 
         Model cubeModel = ModelLoader.loadModel("cube-model", "resources/models/cube/cube.obj",
                 scene.getTextureCache(), scene.getMaterialCache(), false);
