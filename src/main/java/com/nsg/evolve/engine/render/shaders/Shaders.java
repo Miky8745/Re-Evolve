@@ -1,6 +1,6 @@
 package com.nsg.evolve.engine.render.shaders;
 
-import com.nsg.evolve.engine.Utilities;
+import com.nsg.evolve.engine.utilities.Utilities;
 import org.lwjgl.opengl.GL30;
 
 import java.util.ArrayList;

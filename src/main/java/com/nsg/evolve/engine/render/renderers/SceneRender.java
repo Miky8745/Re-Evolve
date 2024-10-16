@@ -11,6 +11,7 @@ import com.nsg.evolve.engine.render.object.cache.TextureCache;
 import com.nsg.evolve.engine.render.shaders.Shaders;
 import com.nsg.evolve.engine.render.shaders.Uniforms;
 import com.nsg.evolve.engine.scene.Scene;
+import com.nsg.evolve.engine.utilities.ResourceLocation;
 import org.lwjgl.system.MemoryUtil;
 import org.tinylog.Logger;
 
@@ -20,12 +21,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.nsg.evolve.engine.Utilities.genPath;
 import static org.lwjgl.opengl.GL30.*;
 import static org.lwjgl.opengl.GL40.GL_DRAW_INDIRECT_BUFFER;
 import static org.lwjgl.opengl.GL43.glMultiDrawElementsIndirect;
 
 public class SceneRender {
+
+    private static final ResourceLocation sceneVertexShader =
+            new ResourceLocation("shaders/scene/scene.vert");
+
+    private static final ResourceLocation sceneFragmentShader =
+            new ResourceLocation("shaders/scene/scene.frag");
+
 
     public static final int MAX_DRAW_ELEMENTS = 100;
     public static final int MAX_ENTITIES = 50;
@@ -42,8 +49,8 @@ public class SceneRender {
 
     public SceneRender() {
         List<Shaders.ShaderModuleData> shaderModuleDataList = new ArrayList<>();
-        shaderModuleDataList.add(new Shaders.ShaderModuleData(genPath("shaders/scene/scene.vert"), GL_VERTEX_SHADER));
-        shaderModuleDataList.add(new Shaders.ShaderModuleData(genPath("shaders/scene/scene.frag"), GL_FRAGMENT_SHADER));
+        shaderModuleDataList.add(new Shaders.ShaderModuleData(sceneVertexShader.path(), GL_VERTEX_SHADER));
+        shaderModuleDataList.add(new Shaders.ShaderModuleData(sceneFragmentShader.path(), GL_FRAGMENT_SHADER));
 
         shaderProgram = new Shaders(shaderModuleDataList);
         createUniforms();

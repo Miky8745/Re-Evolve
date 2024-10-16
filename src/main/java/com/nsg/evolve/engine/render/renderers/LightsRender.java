@@ -11,6 +11,7 @@ import com.nsg.evolve.engine.scene.lighting.lights.AmbientLight;
 import com.nsg.evolve.engine.scene.lighting.lights.DirectionalLight;
 import com.nsg.evolve.engine.scene.lighting.lights.PointLight;
 import com.nsg.evolve.engine.scene.lighting.lights.SpotLight;
+import com.nsg.evolve.engine.utilities.ResourceLocation;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
@@ -18,7 +19,6 @@ import org.joml.Vector4f;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.nsg.evolve.engine.Utilities.genPath;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
@@ -27,6 +27,13 @@ import static org.lwjgl.opengl.GL20.GL_VERTEX_SHADER;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 
 public class LightsRender {
+
+    private static final ResourceLocation lightPassVertexShader =
+            new ResourceLocation("shaders/lights/lights.vert");
+
+    private static final ResourceLocation lightPassFragmentShader =
+            new ResourceLocation("shaders/lights/lights.frag");
+
     private static final int MAX_POINT_LIGHTS = 5;
     private static final int MAX_SPOT_LIGHTS = 5;
 
@@ -37,8 +44,8 @@ public class LightsRender {
 
     public LightsRender() {
         List<Shaders.ShaderModuleData> shaderModuleDataList = new ArrayList<>();
-        shaderModuleDataList.add(new Shaders.ShaderModuleData(genPath("shaders/lights/lights.vert"), GL_VERTEX_SHADER));
-        shaderModuleDataList.add(new Shaders.ShaderModuleData(genPath("shaders/lights/lights.frag"), GL_FRAGMENT_SHADER));
+        shaderModuleDataList.add(new Shaders.ShaderModuleData(lightPassVertexShader.path(), GL_VERTEX_SHADER));
+        shaderModuleDataList.add(new Shaders.ShaderModuleData(lightPassFragmentShader.path(), GL_FRAGMENT_SHADER));
         shaderProgram = new Shaders(shaderModuleDataList);
         quadMesh = new QuadMesh();
         createUniforms();

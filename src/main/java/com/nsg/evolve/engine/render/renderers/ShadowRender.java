@@ -8,6 +8,7 @@ import com.nsg.evolve.engine.render.shaders.Uniforms;
 import com.nsg.evolve.engine.render.shadows.CascadeShadow;
 import com.nsg.evolve.engine.render.shadows.ShadowBuffer;
 import com.nsg.evolve.engine.scene.Scene;
+import com.nsg.evolve.engine.utilities.ResourceLocation;
 import org.lwjgl.system.MemoryUtil;
 
 import java.nio.ByteBuffer;
@@ -16,7 +17,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.nsg.evolve.engine.Utilities.genPath;
 import static org.lwjgl.opengl.GL11.glViewport;
 import static org.lwjgl.opengl.GL20.GL_VERTEX_SHADER;
 import static org.lwjgl.opengl.GL30.*;
@@ -24,6 +24,9 @@ import static org.lwjgl.opengl.GL40.GL_DRAW_INDIRECT_BUFFER;
 import static org.lwjgl.opengl.GL43.glMultiDrawElementsIndirect;
 
 public class ShadowRender {
+
+    private static final ResourceLocation shadowVertexShader =
+            new ResourceLocation("shaders/shadow/shadow.vert");
 
     private static final int COMMAND_SIZE = 5 * 4;
     private ArrayList<CascadeShadow> cascadeShadows;
@@ -41,7 +44,7 @@ public class ShadowRender {
 
     public ShadowRender() {
         List<Shaders.ShaderModuleData> shaderModuleDataList = new ArrayList<>();
-        shaderModuleDataList.add(new Shaders.ShaderModuleData(genPath("shaders/shadow/shadow.vert"), GL_VERTEX_SHADER));
+        shaderModuleDataList.add(new Shaders.ShaderModuleData(shadowVertexShader.path(), GL_VERTEX_SHADER));
         shaderProgram = new Shaders(shaderModuleDataList);
 
         shadowBuffer = new ShadowBuffer();

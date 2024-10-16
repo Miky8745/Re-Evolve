@@ -1,6 +1,6 @@
 package com.nsg.evolve.engine.scene;
 
-import com.nsg.evolve.engine.Utilities;
+import com.nsg.evolve.engine.utilities.Utilities;
 import com.nsg.evolve.engine.render.object.Material;
 import com.nsg.evolve.engine.render.object.Mesh;
 import com.nsg.evolve.engine.render.object.MeshData;

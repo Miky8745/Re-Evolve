@@ -1,4 +1,4 @@
-package com.nsg.evolve.engine;
+package com.nsg.evolve.engine.utilities;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -15,10 +15,6 @@ public class Utilities {
             throw new RuntimeException("Error reading file [" + filePath + "]", excp);
         }
         return str;
-    }
-
-    public static String genPath(String path) {
-        return "src/main/resources/" + path;
     }
 
     public static float[] listFloatToArray(List<Float> list) {

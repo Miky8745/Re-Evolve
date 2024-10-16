@@ -4,25 +4,31 @@ import com.nsg.evolve.engine.gui.QuadGenerator;
 import com.nsg.evolve.engine.interfaces.IGUIElement;
 import com.nsg.evolve.engine.render.shaders.Shaders;
 import com.nsg.evolve.engine.render.shaders.Uniforms;
+import com.nsg.evolve.engine.utilities.ResourceLocation;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.nsg.evolve.engine.Utilities.genPath;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL20.GL_FRAGMENT_SHADER;
 import static org.lwjgl.opengl.GL20.GL_VERTEX_SHADER;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 
-public class CustomGUIRender {
+public class GUIRender {
+
+    private static final ResourceLocation guiVertexShader =
+            new ResourceLocation("shaders/gui/gui.vert");
+
+    private static final ResourceLocation guiFragmentShader =
+            new ResourceLocation("shaders/gui/gui.frag");
 
     private Shaders shaderProgram;
     private Uniforms uniformsMap;
 
-    public CustomGUIRender() {
+    public GUIRender() {
         List<Shaders.ShaderModuleData> shaderModuleDataList = new ArrayList<>();
-        shaderModuleDataList.add(new Shaders.ShaderModuleData(genPath("shaders/customgui/customgui.vert"), GL_VERTEX_SHADER));
-        shaderModuleDataList.add(new Shaders.ShaderModuleData(genPath("shaders/customgui/customgui.frag"), GL_FRAGMENT_SHADER));
+        shaderModuleDataList.add(new Shaders.ShaderModuleData(guiVertexShader.path(), GL_VERTEX_SHADER));
+        shaderModuleDataList.add(new Shaders.ShaderModuleData(guiFragmentShader.path(), GL_FRAGMENT_SHADER));
 
         shaderProgram = new Shaders(shaderModuleDataList);
         createUniforms();

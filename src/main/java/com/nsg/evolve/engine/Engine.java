@@ -1,7 +1,6 @@
 package com.nsg.evolve.engine;
 
 import com.nsg.evolve.engine.interfaces.IAppLogic;
-import com.nsg.evolve.engine.interfaces.IGuiInstance;
 import com.nsg.evolve.engine.render.Render;
 import com.nsg.evolve.engine.scene.Scene;
 
@@ -52,8 +51,6 @@ public class Engine {
 
         long updateTime = initialTime;
 
-        IGuiInstance iGuiInstance = scene.getGuiInstance();
-
         while (running && !window.windowShouldClose()) {
             window.pollEvents();
 
@@ -63,7 +60,7 @@ public class Engine {
 
             if (targetFps <= 0 || deltaFps >= 1) {
                 window.getMouseInput().input(window.getWindowHandle());
-                boolean inputConsumed = iGuiInstance != null && iGuiInstance.handleGuiInput(scene, window);
+                boolean inputConsumed = false;
                 appLogic.input(window, scene, now - initialTime, inputConsumed);
             }
 

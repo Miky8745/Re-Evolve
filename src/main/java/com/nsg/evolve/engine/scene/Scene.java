@@ -1,6 +1,5 @@
 package com.nsg.evolve.engine.scene;
 
-import com.nsg.evolve.engine.interfaces.IGuiInstance;
 import com.nsg.evolve.engine.render.object.Entity;
 import com.nsg.evolve.engine.render.object.Model;
 import com.nsg.evolve.engine.render.object.cache.MaterialCache;
@@ -16,7 +15,6 @@ public class Scene {
     private Projection projection;
     private TextureCache textureCache;
     private Camera camera;
-    private IGuiInstance guiInstance;
     private SceneLights sceneLights;
     private SkyBox skyBox;
     private Fog fog;
@@ -62,14 +60,6 @@ public class Scene {
 
     public Camera getCamera() {
         return camera;
-    }
-
-    public IGuiInstance getGuiInstance() {
-        return guiInstance;
-    }
-
-    public void setGuiInstance(IGuiInstance guiInstance) {
-        this.guiInstance = guiInstance;
     }
 
     public SceneLights getSceneLights() {

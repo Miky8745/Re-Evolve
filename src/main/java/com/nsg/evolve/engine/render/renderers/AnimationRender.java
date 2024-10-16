@@ -6,22 +6,25 @@ import com.nsg.evolve.engine.render.object.Model;
 import com.nsg.evolve.engine.render.shaders.Shaders;
 import com.nsg.evolve.engine.render.shaders.Uniforms;
 import com.nsg.evolve.engine.scene.Scene;
+import com.nsg.evolve.engine.utilities.ResourceLocation;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.nsg.evolve.engine.Utilities.genPath;
 import static org.lwjgl.opengl.GL30.glBindBufferBase;
 import static org.lwjgl.opengl.GL43.*;
 
 public class AnimationRender {
+
+    private static final ResourceLocation animationsComputeShader =
+            new ResourceLocation("shaders/animations/animations.comp");
 
     private Shaders shaderProgram;
     private Uniforms uniformsMap;
 
     public AnimationRender() {
         List<Shaders.ShaderModuleData> shaderModuleDataList = new ArrayList<>();
-        shaderModuleDataList.add(new Shaders.ShaderModuleData(genPath("shaders/animations/animations.comp"), GL_COMPUTE_SHADER));
+        shaderModuleDataList.add(new Shaders.ShaderModuleData(animationsComputeShader.path(), GL_COMPUTE_SHADER));
         shaderProgram = new Shaders(shaderModuleDataList);
         createUniforms();
     }

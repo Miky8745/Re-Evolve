@@ -9,12 +9,12 @@ import com.nsg.evolve.engine.render.shaders.Shaders;
 import com.nsg.evolve.engine.render.shaders.Uniforms;
 import com.nsg.evolve.engine.scene.Scene;
 import com.nsg.evolve.engine.scene.SkyBox;
+import com.nsg.evolve.engine.utilities.ResourceLocation;
 import org.joml.Matrix4f;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.nsg.evolve.engine.Utilities.genPath;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
@@ -24,6 +24,12 @@ import static org.lwjgl.opengl.GL30.glBindVertexArray;
 
 public class SkyBoxRender {
 
+    private static final ResourceLocation skyboxVertexShader =
+            new ResourceLocation("shaders/skybox/skybox.vert");
+
+    private static final ResourceLocation skyboxFragmentShader =
+            new ResourceLocation("shaders/skybox/skybox.frag");
+
     private Shaders shaderProgram;
 
     private Uniforms uniformsMap;
@@ -32,8 +38,8 @@ public class SkyBoxRender {
 
     public SkyBoxRender() {
         List<Shaders.ShaderModuleData> shaderModuleDataList = new ArrayList<>();
-        shaderModuleDataList.add(new Shaders.ShaderModuleData(genPath("shaders/skybox/skybox.vert"), GL_VERTEX_SHADER));
-        shaderModuleDataList.add(new Shaders.ShaderModuleData(genPath("shaders/skybox/skybox.frag"), GL_FRAGMENT_SHADER));
+        shaderModuleDataList.add(new Shaders.ShaderModuleData(skyboxVertexShader.path(), GL_VERTEX_SHADER));
+        shaderModuleDataList.add(new Shaders.ShaderModuleData(skyboxFragmentShader.path(), GL_FRAGMENT_SHADER));
         shaderProgram = new Shaders(shaderModuleDataList);
         viewMatrix = new Matrix4f();
         createUniforms();

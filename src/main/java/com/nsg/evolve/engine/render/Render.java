@@ -21,13 +21,12 @@ public class Render {
 
     private AnimationRender animationRender;
     private GBuffer gBuffer;
-    private GuiRender guiRender;
     private LightsRender lightsRender;
     private RenderBuffers renderBuffers;
     private SceneRender sceneRender;
     private ShadowRender shadowRender;
     private SkyBoxRender skyBoxRender;
-    private CustomGUIRender customGUIRender;
+    private GUIRender customGUIRender;
 
     public Render(Window window) {
         GL.createCapabilities();
@@ -39,19 +38,17 @@ public class Render {
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
         sceneRender = new SceneRender();
-        guiRender = new GuiRender(window);
         skyBoxRender = new SkyBoxRender();
         shadowRender = new ShadowRender();
         lightsRender = new LightsRender();
         animationRender = new AnimationRender();
         gBuffer = new GBuffer(window);
         renderBuffers = new RenderBuffers();
-        customGUIRender = new CustomGUIRender();
+        customGUIRender = new GUIRender();
     }
 
     public void cleanup() {
         sceneRender.cleanup();
-        guiRender.cleanup();
         skyBoxRender.cleanup();
         shadowRender.cleanup();
         lightsRender.cleanup();
@@ -85,12 +82,11 @@ public class Render {
         lightsRender.render(scene, shadowRender, gBuffer);
         skyBoxRender.render(scene);
         lightRenderFinish();
-        guiRender.render(scene);
         customGUIRender.renderAll();
     }
 
     public void resize(int width, int height) {
-        guiRender.resize(width, height);
+        // TODO: Resizing for my gui system
     }
 
     public void setupData(Scene scene) {
