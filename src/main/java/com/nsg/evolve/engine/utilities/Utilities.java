@@ -1,5 +1,7 @@
 package com.nsg.evolve.engine.utilities;
 
+import org.joml.Vector2f;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -28,5 +30,14 @@ public class Utilities {
 
     public static int[] listIntToArray(List<Integer> list) {
         return list.stream().mapToInt((Integer v) -> v).toArray();
+    }
+
+    public static Vector2f screenToNDC(Vector2f screenPos, int width, int height) {
+        Vector2f outVector = new Vector2f();
+
+        outVector.x = (2*screenPos.x) / width - 1;
+        outVector.y = 1 - (2*screenPos.y) / height;
+
+        return outVector;
     }
 }

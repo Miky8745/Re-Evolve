@@ -1,6 +1,7 @@
 package com.nsg.evolve.engine.render;
 
 import com.nsg.evolve.engine.Window;
+import com.nsg.evolve.engine.gui.QuadGenerator;
 import com.nsg.evolve.engine.render.buffers.GBuffer;
 import com.nsg.evolve.engine.render.buffers.RenderBuffers;
 import com.nsg.evolve.engine.render.object.Model;
@@ -63,6 +64,8 @@ public class Render {
     }
 
     private void lightRenderStart(Window window) {
+        resize(window.getWidth(), window.getHeight());
+
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glViewport(0, 0, window.getWidth(), window.getHeight());
@@ -86,7 +89,7 @@ public class Render {
     }
 
     public void resize(int width, int height) {
-        // TODO: Resizing for my gui system
+        QuadGenerator.Quad.resize(width, height);
     }
 
     public void setupData(Scene scene) {

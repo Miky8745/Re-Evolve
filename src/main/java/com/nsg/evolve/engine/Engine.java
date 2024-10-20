@@ -61,7 +61,7 @@ public class Engine {
             if (targetFps <= 0 || deltaFps >= 1) {
                 window.getMouseInput().input(window.getWindowHandle());
                 boolean inputConsumed = false;
-                appLogic.input(window, scene, now - initialTime, inputConsumed);
+                appLogic.input(window, scene, now - initialTime);
             }
 
             if (deltaUpdate >= 1) {

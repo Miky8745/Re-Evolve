@@ -2,6 +2,7 @@ package com.nsg.evolve.engine.demo;
 
 import com.nsg.evolve.engine.Engine;
 import com.nsg.evolve.engine.Window;
+import com.nsg.evolve.engine.gui.Button;
 import com.nsg.evolve.engine.gui.QuadGenerator;
 import com.nsg.evolve.engine.input.MouseInput;
 import com.nsg.evolve.engine.interfaces.IAppLogic;
@@ -35,6 +36,7 @@ public class Main implements IAppLogic {
     private SoundManager soundMgr;
     private Entity cubeEntity1;
     private Entity cubeEntity2;
+    private boolean buttonClicked = false;
 
     public static void main(String[] args) {
         Main main = new Main();
@@ -57,7 +59,7 @@ public class Main implements IAppLogic {
     public void init(Window window, Scene scene, Render render) {
         summonTerrain(scene);
 
-        QuadGenerator.registeredQuads.add(new QuadGenerator.Quad(new Vector2f(0,0), new Vector2f(1,-1), 1));
+        QuadGenerator.registeredQuads.add(new Button(new Vector2f(0,0), new Vector2f(1,-1), 1));
 
         Model cubeModel = ModelLoader.loadModel("cube-model", "resources/models/cube/cube.obj",
                 scene.getTextureCache(), scene.getMaterialCache(), false);
@@ -121,8 +123,19 @@ public class Main implements IAppLogic {
     }
 
     @Override
-    public void input(Window window, Scene scene, long diffTimeMillis, boolean inputConsumed) {
-        if (inputConsumed) {
+    public void input(Window window, Scene scene, long diffTimeMillis) {
+        if (window.getMouseInput().isLeftButtonPressed()) {
+            QuadGenerator.registeredQuads.forEach(e -> {
+                if (e instanceof Button button) {
+                    if (button.click(window.getMouseInput().getCurrentPos())) {
+                        buttonClicked = true;
+                    }
+                }
+            });
+        }
+
+        if (buttonClicked) {
+            buttonClicked = false;
             return;
         }
 
@@ -171,7 +184,7 @@ public class Main implements IAppLogic {
             if (scene.getSelectedEntity() != null) {
                 System.out.println(scene.getSelectedEntity().getId());
             } else {
-                System.out.println("Selected entity is null");
+                //System.out.println("Selected entity is null");
             }
         }
 

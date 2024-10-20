@@ -33,7 +33,16 @@ public class QuadGenerator implements IGUIController {
         private int vaoId;
         private List<Integer> vboIdList;
 
+        protected Vector2f min;
+        protected Vector2f max;
+
+        protected static int width;
+        protected static int height;
+
         public Quad(Vector2f min, Vector2f max, int layer) {
+            this.max = max;
+            this.min = min;
+
             try (MemoryStack stack = MemoryStack.stackPush()) {
                 vboIdList = new ArrayList<>();
                 float gl_layer = layer * -0.1f;
@@ -98,6 +107,11 @@ public class QuadGenerator implements IGUIController {
 
         public int getVaoId() {
             return vaoId;
+        }
+
+        public static void resize(int width, int height) {
+            Quad.width = width;
+            Quad.height = height;
         }
     }
 }
