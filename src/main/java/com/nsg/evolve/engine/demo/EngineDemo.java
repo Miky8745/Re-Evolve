@@ -25,7 +25,7 @@ import org.lwjgl.openal.AL11;
 import static com.nsg.evolve.engine.input.Interactions.selectEntity;
 import static org.lwjgl.glfw.GLFW.*;
 
-public class Main implements IAppLogic {
+public class EngineDemo implements IAppLogic {
 
     private static final float MOUSE_SENSITIVITY = 0.1f;
     private static final float MOVEMENT_SPEED = 0.001f;
@@ -39,10 +39,10 @@ public class Main implements IAppLogic {
     private boolean buttonClicked = false;
 
     public static void main(String[] args) {
-        Main main = new Main();
+        EngineDemo engineDemo = new EngineDemo();
         Window.WindowOptions options = new Window.WindowOptions();
         options.antiAliasing = true;
-        Engine gameEngine = new Engine("Evolve", options, main);
+        Engine gameEngine = new Engine("Evolve", options, engineDemo);
         try {
             gameEngine.start();
         } catch (Exception e) {
