@@ -208,4 +208,6 @@ void main()
     if (fog.activeFog == 1) {
         fragColor = calcFog(view_pos, fragColor, fog, ambientLight.color, dirLight);
     }
+
+    //fragColor = fragColor * 0.1 + vec4(world_pos.y*0.05, world_pos.y*0.05, world_pos.y*0.05, 1.0);
 }

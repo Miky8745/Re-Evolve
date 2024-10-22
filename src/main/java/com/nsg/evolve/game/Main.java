@@ -53,12 +53,12 @@ public class Main implements IAppLogic {
 
     @Override
     public void init(Window window, Scene scene, Render render) {
-        PerlinNoise noise = PerlinNoise.generateNoise(100,100,400,12);
+        PerlinNoise noise = PerlinNoise.generateNoise(100,100,400,12, 2);
 
         Model terrainModel = TerrainGen.generateTerrain(scene ,noise);
         scene.addModel(terrainModel);
 
-        Terrain terrain = new Terrain(terrainModel.getId());
+        Terrain terrain = new Terrain(terrainModel.getId(), noise);
         scene.addEntity(terrain.getTerrain());
 
         Model cubeModel = ModelLoader.loadModel("cube-model", "resources/models/cube/cube.obj",
