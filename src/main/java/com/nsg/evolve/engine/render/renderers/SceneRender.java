@@ -49,8 +49,8 @@ public class SceneRender {
 
     public SceneRender() {
         List<Shaders.ShaderModuleData> shaderModuleDataList = new ArrayList<>();
-        shaderModuleDataList.add(new Shaders.ShaderModuleData(sceneVertexShader.path(), GL_VERTEX_SHADER));
-        shaderModuleDataList.add(new Shaders.ShaderModuleData(sceneFragmentShader.path(), GL_FRAGMENT_SHADER));
+        shaderModuleDataList.add(new Shaders.ShaderModuleData(sceneVertexShader.getFileStream(), GL_VERTEX_SHADER));
+        shaderModuleDataList.add(new Shaders.ShaderModuleData(sceneFragmentShader.getFileStream(), GL_FRAGMENT_SHADER));
 
         shaderProgram = new Shaders(shaderModuleDataList);
         createUniforms();

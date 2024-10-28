@@ -14,6 +14,9 @@ import static org.lwjgl.opengl.GL11.GL_FALSE;
 import static org.lwjgl.opengl.GL11.GL_TRUE;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
+/**
+ * Used to spawn the window
+ */
 public class Window {
 
     private final long windowHandle;
@@ -65,9 +68,7 @@ public class Window {
                 Logger.error("Error code [{}], msg [{}]", errorCode, MemoryUtil.memUTF8(msgPtr))
         );
 
-        glfwSetKeyCallback(windowHandle, (window, key, scancode, action, mods) -> {
-            keyCallBack(key, action);
-        });
+        glfwSetKeyCallback(windowHandle, (window, key, scancode, action, mods) -> keyCallBack(key, action));
 
         glfwMakeContextCurrent(windowHandle);
 
@@ -146,6 +147,9 @@ public class Window {
         return glfwWindowShouldClose(windowHandle);
     }
 
+    /**
+     * Options for the window
+     */
     public static class WindowOptions {
         public boolean antiAliasing;
         public boolean compatibleProfile;

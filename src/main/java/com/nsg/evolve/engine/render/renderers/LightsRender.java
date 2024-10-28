@@ -44,8 +44,8 @@ public class LightsRender {
 
     public LightsRender() {
         List<Shaders.ShaderModuleData> shaderModuleDataList = new ArrayList<>();
-        shaderModuleDataList.add(new Shaders.ShaderModuleData(lightPassVertexShader.path(), GL_VERTEX_SHADER));
-        shaderModuleDataList.add(new Shaders.ShaderModuleData(lightPassFragmentShader.path(), GL_FRAGMENT_SHADER));
+        shaderModuleDataList.add(new Shaders.ShaderModuleData(lightPassVertexShader.getFileStream(), GL_VERTEX_SHADER));
+        shaderModuleDataList.add(new Shaders.ShaderModuleData(lightPassFragmentShader.getFileStream(), GL_FRAGMENT_SHADER));
         shaderProgram = new Shaders(shaderModuleDataList);
         quadMesh = new QuadMesh();
         createUniforms();

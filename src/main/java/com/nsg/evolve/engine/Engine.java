@@ -4,6 +4,9 @@ import com.nsg.evolve.engine.interfaces.IAppLogic;
 import com.nsg.evolve.engine.render.Render;
 import com.nsg.evolve.engine.scene.Scene;
 
+/**
+ * The ENGINE
+ */
 public class Engine {
 
     public static final int TARGET_UPS = 30;
@@ -60,7 +63,6 @@ public class Engine {
 
             if (targetFps <= 0 || deltaFps >= 1) {
                 window.getMouseInput().input(window.getWindowHandle());
-                boolean inputConsumed = false;
                 appLogic.input(window, scene, now - initialTime);
             }
 

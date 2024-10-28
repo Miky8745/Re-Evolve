@@ -27,8 +27,8 @@ public class GUIRender {
 
     public GUIRender() {
         List<Shaders.ShaderModuleData> shaderModuleDataList = new ArrayList<>();
-        shaderModuleDataList.add(new Shaders.ShaderModuleData(guiVertexShader.path(), GL_VERTEX_SHADER));
-        shaderModuleDataList.add(new Shaders.ShaderModuleData(guiFragmentShader.path(), GL_FRAGMENT_SHADER));
+        shaderModuleDataList.add(new Shaders.ShaderModuleData(guiVertexShader.getFileStream(), GL_VERTEX_SHADER));
+        shaderModuleDataList.add(new Shaders.ShaderModuleData(guiFragmentShader.getFileStream(), GL_FRAGMENT_SHADER));
 
         shaderProgram = new Shaders(shaderModuleDataList);
         createUniforms();

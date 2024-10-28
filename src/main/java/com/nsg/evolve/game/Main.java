@@ -17,14 +17,14 @@ import com.nsg.evolve.engine.scene.Scene;
 import com.nsg.evolve.engine.scene.lighting.SceneLights;
 import com.nsg.evolve.engine.scene.lighting.lights.AmbientLight;
 import com.nsg.evolve.engine.scene.lighting.lights.DirectionalLight;
-import com.nsg.evolve.game.terraingen.Terrain;
+import com.nsg.evolve.game.terraingen.BiomeType;
+import com.nsg.evolve.engine.scene.Terrain;
 import com.nsg.evolve.game.terraingen.TerrainGen;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 import static com.nsg.evolve.engine.input.Interactions.selectEntity;
-import static com.nsg.evolve.game.Config.MOUSE_SENSITIVITY;
-import static com.nsg.evolve.game.Config.MOVEMENT_SPEED;
+import static com.nsg.evolve.game.Config.*;
 import static org.lwjgl.glfw.GLFW.*;
 
 public class Main implements IAppLogic {
@@ -53,12 +53,12 @@ public class Main implements IAppLogic {
 
     @Override
     public void init(Window window, Scene scene, Render render) {
-        PerlinNoise noise = PerlinNoise.generateNoise(100,100,400,12, 2);
+        PerlinNoise noise = PerlinNoise.generateNoise(TERRAIN_SIZE,TERRAIN_SIZE,400,12);
 
-        Model terrainModel = TerrainGen.generateTerrain(scene ,noise);
+        Model terrainModel = TerrainGen.generateTerrain(scene, noise, BiomeType.BEACH);
         scene.addModel(terrainModel);
 
-        Terrain terrain = new Terrain(terrainModel.getId(), noise);
+        Terrain terrain = new Terrain(terrainModel.getId(), BiomeType.BEACH);
         scene.addEntity(terrain.getTerrain());
 
         Model cubeModel = ModelLoader.loadModel("cube-model", "resources/models/cube/cube.obj",
@@ -83,7 +83,7 @@ public class Main implements IAppLogic {
 
         DirectionalLight dirLight = sceneLights.getDirLight();
         dirLight.setPosition(0, 1, 0);
-        dirLight.setIntensity(1.0f);
+        dirLight.setIntensity(1f);
         scene.setSceneLights(sceneLights);
         double angRad = Math.toRadians(2.501f);
         dirLight.getDirection().x = (float) Math.sin(angRad);

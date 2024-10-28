@@ -9,15 +9,19 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import static com.nsg.evolve.game.Config.NOISE_MULTIPLIER;
 import static com.nsg.evolve.game.Config.TERRAIN_SIZE;
+import static com.nsg.evolve.game.Config.Terrain.BEACH_NOISE_MULTIPLIER;
 
 public class TerrainGen {
 
-    public static Model generateTerrain(Scene scene, PerlinNoise noise) {
-        List<float[]> shaderData = generateShaderData(noise);
+    public static Map<BiomeType, Float> centerHeights = new HashMap<>();
+
+    public static Model generateTerrain(Scene scene, PerlinNoise noise, BiomeType biomeType) {
+        List<float[]> shaderData = generateShaderData(noise, biomeType);
         float[] positions = shaderData.get(0);
         float[] normals = shaderData.get(1);
         float[] textCoords = shaderData.get(2);
@@ -59,16 +63,21 @@ public class TerrainGen {
         return material.getMaterialIdx();
     }
 
-    private static List<float[]> generateShaderData(PerlinNoise noise) {
+    private static List<float[]> generateShaderData(PerlinNoise noise, BiomeType biomeType) {
         List<Vector3f> vPositions = new ArrayList<>();
         List<Vector3f> vNormals = new ArrayList<>();
         List<Vector2f> vTexCoords = new ArrayList<>();
 
         for (int x = 0; x < TERRAIN_SIZE; x++) {
             for (int z = 0; z < TERRAIN_SIZE; z++) {
-                vPositions.add(new Vector3f(x, noise.getComposedNoiseAt(x,z) * NOISE_MULTIPLIER, z));
+                float y = getYPositionForBiomeType(x, z, noise, biomeType);
+                if (x == 0 && z == 0) {
+                    centerHeights.put(biomeType, y);
+                }
 
-                vNormals.add(calculateNormal(x, z, noise));
+                vPositions.add(new Vector3f(x, y, z));
+
+                vNormals.add(calculateNormal(x, y, z));
 
                 float u = (float) x / (TERRAIN_SIZE - 1);
                 float v = (float) z / (TERRAIN_SIZE - 1);
@@ -100,11 +109,27 @@ public class TerrainGen {
         );
     }
 
-    private static Vector3f calculateNormal(int x, int z, PerlinNoise noise) {
-        Vector3f left = (x > 0) ? new Vector3f(x - 1, noise.getComposedNoiseAt(x - 1, z) * NOISE_MULTIPLIER, z) : new Vector3f(x, noise.getComposedNoiseAt(x, z) * NOISE_MULTIPLIER, z);
-        Vector3f right = (x < TERRAIN_SIZE - 1) ? new Vector3f(x + 1, noise.getComposedNoiseAt(x + 1, z) * NOISE_MULTIPLIER, z) : new Vector3f(x, noise.getComposedNoiseAt(x, z) * NOISE_MULTIPLIER, z);
-        Vector3f down = (z > 0) ? new Vector3f(x, noise.getComposedNoiseAt(x, z - 1) * NOISE_MULTIPLIER, z - 1) : new Vector3f(x, noise.getComposedNoiseAt(x, z) * NOISE_MULTIPLIER, z);
-        Vector3f up = (z < TERRAIN_SIZE - 1) ? new Vector3f(x, noise.getComposedNoiseAt(x, z + 1) * NOISE_MULTIPLIER, z + 1) : new Vector3f(x, noise.getComposedNoiseAt(x, z) * NOISE_MULTIPLIER, z);
+    private static float getYPositionForBiomeType(int x, int z, PerlinNoise noise, BiomeType biomeType) {
+        switch (biomeType) {
+            case BEACH -> {
+                return getYPositionForBeach(x, z, noise);
+            }
+
+            default -> {
+                return 0;
+            }
+        }
+    }
+
+    private static float getYPositionForBeach(int x, int z, PerlinNoise noise) {
+        return noise.getComposedNoiseAt(x, z) * BEACH_NOISE_MULTIPLIER;
+    }
+
+    private static Vector3f calculateNormal(int x, float y, int z) {
+        Vector3f left = (x > 0) ? new Vector3f(x - 1, y, z) : new Vector3f(x, y, z);
+        Vector3f right = (x < TERRAIN_SIZE - 1) ? new Vector3f(x + 1, y, z) : new Vector3f(x, y, z);
+        Vector3f down = (z > 0) ? new Vector3f(x, y, z - 1) : new Vector3f(x, y, z);
+        Vector3f up = (z < TERRAIN_SIZE - 1) ? new Vector3f(x, y, z + 1) : new Vector3f(x, y, z);
 
         Vector3f horizontal = new Vector3f(right.x - left.x, right.y - left.y, right.z - left.z);
         Vector3f vertical = new Vector3f(up.x - down.x, up.y - down.y, up.z - down.z);

@@ -11,7 +11,7 @@ The **Evolve Game Engine** is a custom-built game engine designed to surpass my 
 
 The long-term vision for the Evolve engine includes the development of a 3D game that combines survival, crafting, and exploration elements, similar to popular titles in the genre but with a stronger emphasis on intricate, technical gameplay. The aim is to offer a more challenging, detail-oriented experience that rewards strategic thinking and mastery.
 
-**This is the final version, as development has moved to a private repository.**
+**This is a private repo how the hack did you get here?**
 
 ---
 

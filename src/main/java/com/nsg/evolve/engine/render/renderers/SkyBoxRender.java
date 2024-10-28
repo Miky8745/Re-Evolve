@@ -38,8 +38,8 @@ public class SkyBoxRender {
 
     public SkyBoxRender() {
         List<Shaders.ShaderModuleData> shaderModuleDataList = new ArrayList<>();
-        shaderModuleDataList.add(new Shaders.ShaderModuleData(skyboxVertexShader.path(), GL_VERTEX_SHADER));
-        shaderModuleDataList.add(new Shaders.ShaderModuleData(skyboxFragmentShader.path(), GL_FRAGMENT_SHADER));
+        shaderModuleDataList.add(new Shaders.ShaderModuleData(skyboxVertexShader.getFileStream(), GL_VERTEX_SHADER));
+        shaderModuleDataList.add(new Shaders.ShaderModuleData(skyboxFragmentShader.getFileStream(), GL_FRAGMENT_SHADER));
         shaderProgram = new Shaders(shaderModuleDataList);
         viewMatrix = new Matrix4f();
         createUniforms();

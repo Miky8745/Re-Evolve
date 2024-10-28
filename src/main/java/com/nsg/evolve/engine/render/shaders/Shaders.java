@@ -3,6 +3,7 @@ package com.nsg.evolve.engine.render.shaders;
 import com.nsg.evolve.engine.utilities.Utilities;
 import org.lwjgl.opengl.GL30;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class Shaders {
         }
 
         List<Integer> shaderModules = new ArrayList<>();
-        shaderModuleDataList.forEach(s -> shaderModules.add(createShader(Utilities.readFile(s.shaderFile), s.shaderType)));
+        shaderModuleDataList.forEach(s -> shaderModules.add(createShader(Utilities.readFile(s.stream), s.shaderType)));
 
         link(shaderModules);
     }
@@ -78,6 +79,6 @@ public class Shaders {
         }
     }
 
-    public record ShaderModuleData(String shaderFile, int shaderType) {
+    public record ShaderModuleData(InputStream stream, int shaderType) {
     }
 }

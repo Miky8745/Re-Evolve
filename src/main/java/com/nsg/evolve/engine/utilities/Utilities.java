@@ -2,21 +2,32 @@ package com.nsg.evolve.engine.utilities;
 
 import org.joml.Vector2f;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.List;
 
+/**
+ * Utilities class
+ */
 public class Utilities {
 
-    public static String readFile(String filePath) {
-        String str;
+    public static String readFile(InputStream stream) {
+        StringBuilder builder = new StringBuilder();
         try {
-            str = new String(Files.readAllBytes(Paths.get(filePath)));
-        } catch (IOException excp) {
-            throw new RuntimeException("Error reading file [" + filePath + "]", excp);
+             InputStreamReader inputStreamReader = new InputStreamReader(stream);
+             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                builder.append(line).append("\n");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return str;
+
+        return builder.toString();
     }
 
     public static float[] listFloatToArray(List<Float> list) {
