@@ -15,6 +15,7 @@ import java.util.Map;
 
 import static com.nsg.evolve.game.Config.TERRAIN_SIZE;
 import static com.nsg.evolve.game.Config.Terrain.BEACH_NOISE_MULTIPLIER;
+import static com.nsg.evolve.game.terraingen.TerrainGen.HeightGetters.getYPositionForBiomeType;
 
 public class TerrainGen {
 
@@ -71,13 +72,13 @@ public class TerrainGen {
         for (int x = 0; x < TERRAIN_SIZE; x++) {
             for (int z = 0; z < TERRAIN_SIZE; z++) {
                 float y = getYPositionForBiomeType(x, z, noise, biomeType);
-                if (x == 0 && z == 0) {
+                if (x == TERRAIN_SIZE/2 && z == TERRAIN_SIZE/2) {
                     centerHeights.put(biomeType, y);
                 }
 
                 vPositions.add(new Vector3f(x, y, z));
 
-                vNormals.add(calculateNormal(x, y, z));
+                vNormals.add(calculateNormal(x, z, biomeType, noise));
 
                 float u = (float) x / (TERRAIN_SIZE - 1);
                 float v = (float) z / (TERRAIN_SIZE - 1);
@@ -109,27 +110,11 @@ public class TerrainGen {
         );
     }
 
-    private static float getYPositionForBiomeType(int x, int z, PerlinNoise noise, BiomeType biomeType) {
-        switch (biomeType) {
-            case BEACH -> {
-                return getYPositionForBeach(x, z, noise);
-            }
-
-            default -> {
-                return 0;
-            }
-        }
-    }
-
-    private static float getYPositionForBeach(int x, int z, PerlinNoise noise) {
-        return noise.getComposedNoiseAt(x, z) * BEACH_NOISE_MULTIPLIER;
-    }
-
-    private static Vector3f calculateNormal(int x, float y, int z) {
-        Vector3f left = (x > 0) ? new Vector3f(x - 1, y, z) : new Vector3f(x, y, z);
-        Vector3f right = (x < TERRAIN_SIZE - 1) ? new Vector3f(x + 1, y, z) : new Vector3f(x, y, z);
-        Vector3f down = (z > 0) ? new Vector3f(x, y, z - 1) : new Vector3f(x, y, z);
-        Vector3f up = (z < TERRAIN_SIZE - 1) ? new Vector3f(x, y, z + 1) : new Vector3f(x, y, z);
+    private static Vector3f calculateNormal(int x, int z, BiomeType biomeType, PerlinNoise perlinNoise) {
+        Vector3f left = (x > 0) ? new Vector3f(x - 1, getYPositionForBiomeType(x - 1, z, perlinNoise, biomeType), z) : new Vector3f(x, getYPositionForBiomeType(x, z, perlinNoise, biomeType), z);
+        Vector3f right = (x < TERRAIN_SIZE - 1) ? new Vector3f(x + 1, getYPositionForBiomeType(x + 1, z, perlinNoise, biomeType), z) : new Vector3f(x, getYPositionForBiomeType(x, z, perlinNoise, biomeType), z);
+        Vector3f down = (z > 0) ? new Vector3f(x, getYPositionForBiomeType(x, z - 1, perlinNoise, biomeType), z - 1) : new Vector3f(x, getYPositionForBiomeType(x, z, perlinNoise, biomeType), z);
+        Vector3f up = (z < TERRAIN_SIZE - 1) ? new Vector3f(x, getYPositionForBiomeType(x, z + 1, perlinNoise, biomeType), z + 1) : new Vector3f(x, getYPositionForBiomeType(x, z, perlinNoise, biomeType), z);
 
         Vector3f horizontal = new Vector3f(right.x - left.x, right.y - left.y, right.z - left.z);
         Vector3f vertical = new Vector3f(up.x - down.x, up.y - down.y, up.z - down.z);
@@ -253,5 +238,23 @@ public class TerrainGen {
         }
 
         return List.of(tangentArray, bitangentArray);  // Return either tangents or bitangents based on your needs
+    }
+
+    static class HeightGetters {
+        static float getYPositionForBiomeType(int x, int z, PerlinNoise noise, BiomeType biomeType) {
+            switch (biomeType) {
+                case BEACH -> {
+                    return getYPositionForBeach(x, z, noise);
+                }
+
+                default -> {
+                    return 0;
+                }
+            }
+        }
+
+        private static float getYPositionForBeach(int x, int z, PerlinNoise noise) {
+            return noise.getComposedNoiseAt(x, z) * BEACH_NOISE_MULTIPLIER;
+        }
     }
 }
