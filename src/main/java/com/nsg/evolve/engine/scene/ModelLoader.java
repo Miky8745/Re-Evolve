@@ -141,7 +141,7 @@ public class ModelLoader {
 
         AIScene aiScene = aiImportFile(modelPath, flags);
         if (aiScene == null) {
-            throw new RuntimeException("Error loading model [modelPath: " + modelPath + "]");
+            throw new RuntimeException("Error loading model [modelPath: " + modelPath + "]" + Assimp.aiGetErrorString());
         }
 
         int numMaterials = aiScene.mNumMaterials();
@@ -212,6 +212,11 @@ public class ModelLoader {
     private static float[] processBitangents(AIMesh aiMesh, float[] normals) {
 
         AIVector3D.Buffer buffer = aiMesh.mBitangents();
+
+        if (buffer == null) {
+            return new float[normals.length];
+        }
+
         float[] data = new float[buffer.remaining() * 3];
         int pos = 0;
         while (buffer.remaining() > 0) {
@@ -375,8 +380,13 @@ public class ModelLoader {
     }
 
     private static float[] processTangents(AIMesh aiMesh, float[] normals) {
-
         AIVector3D.Buffer buffer = aiMesh.mTangents();
+
+        if (buffer == null) {
+            return new float[normals.length];
+        }
+
+        // If tangents are available, process them
         float[] data = new float[buffer.remaining() * 3];
         int pos = 0;
         while (buffer.remaining() > 0) {

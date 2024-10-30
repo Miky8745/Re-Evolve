@@ -10,6 +10,4 @@ public class Config {
 
     @Test
     public static final int TERRAIN_SIZE = 50;
-    @Test
-    public static final float NOISE_MULTIPLIER = 15;
 }

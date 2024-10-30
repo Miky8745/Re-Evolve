@@ -10,16 +10,14 @@ import com.nsg.evolve.engine.noise.PerlinNoise;
 import com.nsg.evolve.engine.render.Render;
 import com.nsg.evolve.engine.render.object.Entity;
 import com.nsg.evolve.engine.render.object.Model;
-import com.nsg.evolve.engine.scene.Camera;
-import com.nsg.evolve.engine.scene.Fog;
-import com.nsg.evolve.engine.scene.ModelLoader;
-import com.nsg.evolve.engine.scene.Scene;
+import com.nsg.evolve.engine.scene.Terrain;
+import com.nsg.evolve.engine.scene.*;
 import com.nsg.evolve.engine.scene.lighting.SceneLights;
 import com.nsg.evolve.engine.scene.lighting.lights.AmbientLight;
 import com.nsg.evolve.engine.scene.lighting.lights.DirectionalLight;
 import com.nsg.evolve.game.terraingen.BiomeType;
-import com.nsg.evolve.engine.scene.Terrain;
 import com.nsg.evolve.game.terraingen.TerrainGen;
+import org.joml.Math;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
@@ -67,7 +65,7 @@ public class Main implements IAppLogic {
         cubeEntity1 = new Entity("cube-entity-1", cubeModel.getId());
         cubeEntity1.setPosition(0, 2, -1);
         cubeEntity1.updateModelMatrix();
-        scene.addEntity(cubeEntity1);
+        //scene.addEntity(cubeEntity1);
 
         cubeEntity2 = new Entity("cube-entity-2", cubeModel.getId());
         cubeEntity2.setPosition(-2, 2, -1);
@@ -93,7 +91,7 @@ public class Main implements IAppLogic {
 
         Camera camera = scene.getCamera();
         camera.setPosition(-1.5f, 3.0f, 4.5f);
-        camera.addRotation((float) Math.toRadians(0), (float) Math.toRadians(0));
+        camera.addRotation(Math.toRadians(0), Math.toRadians(0));
     }
 
     @Override
@@ -136,17 +134,15 @@ public class Main implements IAppLogic {
         MouseInput mouseInput = window.getMouseInput();
         if (mouseInput.isRightButtonPressed()) {
             Vector2f displVec = mouseInput.getDisplVec();
-            camera.addRotation((float) Math.toRadians(
+            camera.addRotation(Math.toRadians(
                             displVec.x * MOUSE_SENSITIVITY),
-                    (float) Math.toRadians(displVec.y * MOUSE_SENSITIVITY));
+                    Math.toRadians(displVec.y * MOUSE_SENSITIVITY));
         }
 
         if (mouseInput.isLeftButtonPressed()) {
             selectEntity(scene);
             if (scene.getSelectedEntity() != null) {
                 System.out.println(scene.getSelectedEntity().getId());
-            } else {
-                //System.out.println("Selected entity is null");
             }
         }
     }
@@ -158,10 +154,10 @@ public class Main implements IAppLogic {
             rotation = 0;
         }
 
-        cubeEntity1.setRotation(1, 1, 1, (float) Math.toRadians(rotation));
+        cubeEntity1.setRotation(1, 1, 1, Math.toRadians(rotation));
         cubeEntity1.updateModelMatrix();
 
-        cubeEntity2.setRotation(1, 1, 1, (float) Math.toRadians(360 - rotation));
+        cubeEntity2.setRotation(1, 1, 1, Math.toRadians(360 - rotation));
         cubeEntity2.updateModelMatrix();
     }
 }

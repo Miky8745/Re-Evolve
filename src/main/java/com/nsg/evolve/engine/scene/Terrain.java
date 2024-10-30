@@ -1,6 +1,5 @@
 package com.nsg.evolve.engine.scene;
 
-import com.nsg.evolve.engine.noise.PerlinNoise;
 import com.nsg.evolve.engine.render.object.Entity;
 import com.nsg.evolve.game.terraingen.BiomeType;
 import com.nsg.evolve.game.terraingen.TerrainGen;
