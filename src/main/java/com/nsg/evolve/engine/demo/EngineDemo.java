@@ -1,6 +1,7 @@
 package com.nsg.evolve.engine.demo;
 
 import com.nsg.evolve.engine.Engine;
+import com.nsg.evolve.engine.Time;
 import com.nsg.evolve.engine.Window;
 import com.nsg.evolve.engine.gui.Button;
 import com.nsg.evolve.engine.gui.QuadGenerator;
@@ -123,7 +124,7 @@ public class EngineDemo implements IAppLogic {
     }
 
     @Override
-    public void input(Window window, Scene scene, long diffTimeMillis) {
+    public void input(Window window, Scene scene) {
         if (window.getMouseInput().isLeftButtonPressed()) {
             QuadGenerator.registeredQuads.forEach(e -> {
                 if (e instanceof Button button) {
@@ -139,7 +140,7 @@ public class EngineDemo implements IAppLogic {
             return;
         }
 
-        float move = diffTimeMillis * MOVEMENT_SPEED;
+        float move = Time.deltaTimeMillis * MOVEMENT_SPEED;
         Camera camera = scene.getCamera();
 
         if (window.isKeyPressed(GLFW_KEY_W)) {
@@ -184,7 +185,7 @@ public class EngineDemo implements IAppLogic {
             if (scene.getSelectedEntity() != null) {
                 System.out.println(scene.getSelectedEntity().getId());
             } else {
-                //System.out.println("Selected entity is null");
+                System.out.println("Selected entity is null");
             }
         }
 
@@ -196,11 +197,11 @@ public class EngineDemo implements IAppLogic {
     }
 
     @Override
-    public void update(Window window, Scene scene, long diffTimeMillis) {
+    public void update(Window window, Scene scene) {
         if (animationData1 != null) {
             animationData1.nextFrame();
 
-            if (diffTimeMillis % 2 == 0) {
+            if (Time.deltaTimeMillis % 2 == 0) {
                 animationData2.nextFrame();
             }
         }

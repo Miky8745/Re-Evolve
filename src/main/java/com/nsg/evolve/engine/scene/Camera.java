@@ -11,12 +11,17 @@ public class Camera {
     private Matrix4f viewMatrix;
     private Matrix4f invViewMatrix;
 
+    public boolean affectedByGravity;
+    private Vector3f velocity;
+
     public Camera() {
         position = new Vector3f(0, 0, 0);  // Initial camera position
         rotation = new Vector2f(0, 0);  // Initial rotation: pitch (x), yaw (y)
         viewMatrix = new Matrix4f();
         invViewMatrix = new Matrix4f();
         recalculate();  // Set up initial view matrix
+        affectedByGravity = false;
+        velocity = new Vector3f(0,0,0);
     }
 
     public void addRotation(float pitch, float yaw) {
@@ -102,5 +107,13 @@ public class Camera {
     public void setRotation(float pitch, float yaw) {
         rotation.set(pitch, yaw);
         recalculate();
+    }
+
+    public Vector3f getVelocity() {
+        return velocity;
+    }
+
+    public void setVelocity(Vector3f velocity) {
+        this.velocity = velocity;
     }
 }

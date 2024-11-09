@@ -1,12 +1,14 @@
 package com.nsg.evolve.game;
 
 import com.nsg.evolve.engine.Engine;
+import com.nsg.evolve.engine.Time;
 import com.nsg.evolve.engine.Window;
 import com.nsg.evolve.engine.gui.Button;
 import com.nsg.evolve.engine.gui.QuadGenerator;
 import com.nsg.evolve.engine.input.MouseInput;
 import com.nsg.evolve.engine.interfaces.IAppLogic;
 import com.nsg.evolve.engine.noise.PerlinNoise;
+import com.nsg.evolve.engine.physics.Physics;
 import com.nsg.evolve.engine.render.Render;
 import com.nsg.evolve.engine.render.object.Entity;
 import com.nsg.evolve.engine.render.object.Model;
@@ -31,12 +33,13 @@ public class Main implements IAppLogic {
     private Entity cubeEntity1;
     private Entity cubeEntity2;
     private boolean buttonClicked = false;
+    private Physics physics;
 
     public static void main(String[] args) {
         Main main = new Main();
         Window.WindowOptions options = new Window.WindowOptions();
         options.antiAliasing = true;
-        Engine gameEngine = new Engine("Evolve", options, main);
+        Engine gameEngine = new Engine("Re-Evolve", options, main);
         try {
             gameEngine.start();
         } catch (Exception e) {
@@ -51,6 +54,9 @@ public class Main implements IAppLogic {
 
     @Override
     public void init(Window window, Scene scene, Render render) {
+        physics = new Physics();
+        physics.getGravity().enabled = true;
+
         PerlinNoise noise = PerlinNoise.generateNoise(TERRAIN_SIZE,TERRAIN_SIZE,400,12);
 
         Model terrainModel = TerrainGen.generateTerrain(scene, noise, BiomeType.BEACH);
@@ -65,7 +71,7 @@ public class Main implements IAppLogic {
         cubeEntity1 = new Entity("cube-entity-1", cubeModel.getId());
         cubeEntity1.setPosition(0, 2, -1);
         cubeEntity1.updateModelMatrix();
-        //scene.addEntity(cubeEntity1);
+        scene.addEntity(cubeEntity1);
 
         cubeEntity2 = new Entity("cube-entity-2", cubeModel.getId());
         cubeEntity2.setPosition(-2, 2, -1);
@@ -95,7 +101,7 @@ public class Main implements IAppLogic {
     }
 
     @Override
-    public void input(Window window, Scene scene, long diffTimeMillis) {
+    public void input(Window window, Scene scene) {
         if (window.getMouseInput().isLeftButtonPressed()) {
             QuadGenerator.registeredQuads.forEach(e -> {
                 if (e instanceof Button button) {
@@ -111,7 +117,7 @@ public class Main implements IAppLogic {
             return;
         }
 
-        float move = diffTimeMillis * MOVEMENT_SPEED;
+        float move = Time.deltaTimeMillis * MOVEMENT_SPEED;
         Camera camera = scene.getCamera();
 
         if (window.isKeyPressed(GLFW_KEY_W)) {
@@ -131,6 +137,12 @@ public class Main implements IAppLogic {
             camera.moveDown(move);
         }
 
+        if (window.isKeyPressed(GLFW_KEY_G)) {
+            camera.affectedByGravity = true;
+        } else if (window.isKeyPressed(GLFW_KEY_H)) {
+            camera.affectedByGravity = false;
+        }
+
         MouseInput mouseInput = window.getMouseInput();
         if (mouseInput.isRightButtonPressed()) {
             Vector2f displVec = mouseInput.getDisplVec();
@@ -148,7 +160,9 @@ public class Main implements IAppLogic {
     }
 
     @Override
-    public void update(Window window, Scene scene, long diffTimeMillis) {
+    public void update(Window window, Scene scene) {
+        physics.update(scene);
+
         rotation += 1.5f;
         if (rotation > 360) {
             rotation = 0;
