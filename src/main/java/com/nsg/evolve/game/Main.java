@@ -39,7 +39,7 @@ public class Main implements IAppLogic {
         Main main = new Main();
         Window.WindowOptions options = new Window.WindowOptions();
         options.antiAliasing = true;
-        Engine gameEngine = new Engine("Re-Evolve", options, main);
+        Engine gameEngine = new Engine("Re-Evolve", options, main, BiomeType.BEACH);
         try {
             gameEngine.start();
         } catch (Exception e) {
@@ -56,6 +56,9 @@ public class Main implements IAppLogic {
     public void init(Window window, Scene scene, Render render) {
         physics = new Physics();
         physics.getGravity().enabled = true;
+        physics.getTerrainCollisions().enabled = true;
+
+        scene.getCamera().affectedByGravity = true;
 
         PerlinNoise noise = PerlinNoise.generateNoise(TERRAIN_SIZE,TERRAIN_SIZE,400,12);
 
@@ -135,12 +138,6 @@ public class Main implements IAppLogic {
             camera.moveUp(move);
         } else if (window.isKeyPressed(GLFW_KEY_LEFT_SHIFT)) {
             camera.moveDown(move);
-        }
-
-        if (window.isKeyPressed(GLFW_KEY_G)) {
-            camera.affectedByGravity = true;
-        } else if (window.isKeyPressed(GLFW_KEY_H)) {
-            camera.affectedByGravity = false;
         }
 
         MouseInput mouseInput = window.getMouseInput();

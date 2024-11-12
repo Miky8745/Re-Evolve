@@ -12,7 +12,9 @@ public class Terrain {
 
     public Terrain(String modelId, BiomeType type) {
         terrain = new Entity("terrainEntity", modelId);
-        terrain.setPosition(-TERRAIN_SIZE/2f, -TerrainGen.centerHeights.get(type), -TERRAIN_SIZE/2f);
+        terrain.setPosition(-TERRAIN_SIZE/2f, -TerrainGen.heights.get(type).
+                getHeightAt(TERRAIN_SIZE/2, TERRAIN_SIZE/2),
+                -TERRAIN_SIZE/2f);
         terrain.updateModelMatrix();
         this.biomeType = type;
     }

@@ -1,5 +1,6 @@
 package com.nsg.evolve.engine.scene;
 
+import com.nsg.evolve.game.terraingen.BiomeType;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
@@ -14,7 +15,9 @@ public class Camera {
     public boolean affectedByGravity;
     private Vector3f velocity;
 
-    public Camera() {
+    private BiomeType activeBiomeType;
+
+    public Camera(BiomeType biomeType) {
         position = new Vector3f(0, 0, 0);  // Initial camera position
         rotation = new Vector2f(0, 0);  // Initial rotation: pitch (x), yaw (y)
         viewMatrix = new Matrix4f();
@@ -22,6 +25,7 @@ public class Camera {
         recalculate();  // Set up initial view matrix
         affectedByGravity = false;
         velocity = new Vector3f(0,0,0);
+        activeBiomeType = biomeType;
     }
 
     public void addRotation(float pitch, float yaw) {
@@ -115,5 +119,13 @@ public class Camera {
 
     public void setVelocity(Vector3f velocity) {
         this.velocity = velocity;
+    }
+
+    public BiomeType getActiveBiomeType() {
+        return activeBiomeType;
+    }
+
+    public void setActiveBiomeType(BiomeType activeBiomeType) {
+        this.activeBiomeType = activeBiomeType;
     }
 }

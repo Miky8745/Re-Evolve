@@ -19,6 +19,7 @@ import com.nsg.evolve.engine.sound.SoundBuffer;
 import com.nsg.evolve.engine.sound.SoundListener;
 import com.nsg.evolve.engine.sound.SoundManager;
 import com.nsg.evolve.engine.sound.SoundSource;
+import com.nsg.evolve.game.terraingen.BiomeType;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.lwjgl.openal.AL11;
@@ -43,7 +44,7 @@ public class EngineDemo implements IAppLogic {
         EngineDemo engineDemo = new EngineDemo();
         Window.WindowOptions options = new Window.WindowOptions();
         options.antiAliasing = true;
-        Engine gameEngine = new Engine("Evolve", options, engineDemo);
+        Engine gameEngine = new Engine("Evolve", options, engineDemo, BiomeType.BEACH);
         try {
             gameEngine.start();
         } catch (Exception e) {

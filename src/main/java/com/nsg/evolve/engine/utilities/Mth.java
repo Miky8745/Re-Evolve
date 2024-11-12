@@ -9,18 +9,14 @@ public class Mth {
 
     /**
      * Simple interpolation x(t) = (x(1)-x(0)) * t + x(0)
-     * @param start absolute value of x(0)
-     * @param end absolute value of x(1)
+     * @param start value of x(0)
+     * @param end value of x(1)
      * @param point t
      * @return x(t)
      */
 
     public static float simpleInterpolation(float start, float end, float point) {
-        float line = end - start;
-
-        float baseValue = line * point;
-
-        return baseValue + start;
+        return start + (end - start) * point;
     }
 
     /**

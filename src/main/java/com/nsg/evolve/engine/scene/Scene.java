@@ -5,6 +5,7 @@ import com.nsg.evolve.engine.render.object.Model;
 import com.nsg.evolve.engine.render.object.cache.MaterialCache;
 import com.nsg.evolve.engine.render.object.cache.TextureCache;
 import com.nsg.evolve.engine.scene.lighting.SceneLights;
+import com.nsg.evolve.game.terraingen.BiomeType;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,11 +22,11 @@ public class Scene {
     private Entity selectedEntity;
     private MaterialCache materialCache;
 
-    public Scene(int width, int height) {
+    public Scene(int width, int height, BiomeType biomeType) {
         modelMap = new HashMap<>();
         projection = new Projection(width, height);
         textureCache = new TextureCache();
-        camera = new Camera();
+        camera = new Camera(biomeType);
         materialCache = new MaterialCache();
     }
 

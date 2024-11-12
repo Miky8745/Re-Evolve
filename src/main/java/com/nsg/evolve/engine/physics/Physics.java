@@ -8,14 +8,20 @@ import org.joml.Vector3f;
 public class Physics {
 
     private Gravity gravity;
+    private TerrainCollisions terrainCollisions;
 
     public Physics() {
         gravity = new Gravity();
+        terrainCollisions = new TerrainCollisions();
     }
 
     public void update(Scene scene) {
         if (gravity.enabled) {
             gravity.update(scene);
+        }
+
+        if (terrainCollisions.enabled) {
+            terrainCollisions.update(scene);
         }
 
         moveEntities(scene);
@@ -25,15 +31,15 @@ public class Physics {
         Vector3f pos = scene.getCamera().getPosition();
         Vector3f velocity = scene.getCamera().getVelocity();
         Vector3f updatedPos = Mth.add(pos, Mth.multiply(velocity, Time.deltaTime));
-        scene.getCamera().setPosition(updatedPos.x, updatedPos.y, updatedPos.z);
 
-        scene.getModelMap().values().forEach(m -> m.getEntitiesList().forEach(e -> {
-            Vector3f updatedPosition = Mth.add(e.getPosition(), Mth.multiply(e.getVelocity(), Time.deltaTime));
-            e.setPosition(updatedPosition.x, updatedPosition.y, updatedPosition.z);
-        }));
+        scene.getCamera().setPosition(updatedPos.x, updatedPos.y, updatedPos.z);
     }
 
     public Gravity getGravity() {
         return gravity;
+    }
+
+    public TerrainCollisions getTerrainCollisions() {
+        return terrainCollisions;
     }
 }

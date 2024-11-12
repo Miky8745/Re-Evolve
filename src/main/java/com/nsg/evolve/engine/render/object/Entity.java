@@ -15,10 +15,6 @@ public class Entity {
     private Quaternionf rotation;
     private float scale;
 
-    //Physics stuff
-    private boolean affectedByGravity;
-    private Vector3f velocity;
-
     public Entity(String id, String modelId) {
         this.id = id;
         this.modelId = modelId;
@@ -26,9 +22,6 @@ public class Entity {
         position = new Vector3f();
         rotation = new Quaternionf();
         scale = 1;
-
-        affectedByGravity = false;
-        velocity = new Vector3f(0,0,0);
     }
 
     public AnimationData getAnimationData() {
@@ -79,17 +72,5 @@ public class Entity {
 
     public void updateModelMatrix() {
         modelMatrix.translationRotateScale(position, rotation, scale);
-    }
-
-    public boolean isAffectedByGravity() {
-        return affectedByGravity;
-    }
-
-    public void setAffectedByGravity(boolean affectedByGravity) {
-        this.affectedByGravity = affectedByGravity;
-    }
-
-    public Vector3f getVelocity() {
-        return velocity;
     }
 }

@@ -19,7 +19,7 @@ import static com.nsg.evolve.game.terraingen.TerrainGen.HeightGetters.getYPositi
 
 public class TerrainGen {
 
-    public static Map<BiomeType, Float> centerHeights = new HashMap<>();
+    public static Map<BiomeType, TerrainHeightMap> heights = new HashMap<>();
 
     public static Model generateTerrain(Scene scene, PerlinNoise noise, BiomeType biomeType) {
         List<float[]> shaderData = generateShaderData(noise, biomeType);
@@ -68,13 +68,12 @@ public class TerrainGen {
         List<Vector3f> vPositions = new ArrayList<>();
         List<Vector3f> vNormals = new ArrayList<>();
         List<Vector2f> vTexCoords = new ArrayList<>();
+        TerrainHeightMap heightMap = new TerrainHeightMap(TERRAIN_SIZE, TERRAIN_SIZE, biomeType);
 
         for (int x = 0; x < TERRAIN_SIZE; x++) {
             for (int z = 0; z < TERRAIN_SIZE; z++) {
                 float y = getYPositionForBiomeType(x, z, noise, biomeType);
-                if (x == TERRAIN_SIZE/2 && z == TERRAIN_SIZE/2) {
-                    centerHeights.put(biomeType, y);
-                }
+                heightMap.writeHeightTo(x, z, y);
 
                 vPositions.add(new Vector3f(x, y, z));
 
@@ -102,6 +101,8 @@ public class TerrainGen {
             texCoords[i * 2] = vTexCoords.get(i).x;
             texCoords[i * 2 + 1] = vTexCoords.get(i).y;
         }
+
+        heights.put(biomeType, heightMap);
 
         return List.of(
                 positions,

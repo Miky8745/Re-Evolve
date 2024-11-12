@@ -3,6 +3,7 @@ package com.nsg.evolve.engine;
 import com.nsg.evolve.engine.interfaces.IAppLogic;
 import com.nsg.evolve.engine.render.Render;
 import com.nsg.evolve.engine.scene.Scene;
+import com.nsg.evolve.game.terraingen.BiomeType;
 
 import static com.nsg.evolve.engine.Time.MILLISECOND;
 
@@ -20,7 +21,7 @@ public class Engine {
     private int targetFps;
     private int targetUps;
 
-    public Engine(String windowTitle, Window.WindowOptions opts, IAppLogic appLogic) {
+    public Engine(String windowTitle, Window.WindowOptions opts, IAppLogic appLogic, BiomeType biomeType) {
         window = new Window(windowTitle, opts, () -> {
             resize();
             return null;
@@ -29,7 +30,7 @@ public class Engine {
         targetUps = opts.ups;
         this.appLogic = appLogic;
         render = new Render(window);
-        scene = new Scene(window.getWidth(), window.getHeight());
+        scene = new Scene(window.getWidth(), window.getHeight(), biomeType);
         appLogic.init(window, scene, render);
         running = true;
     }
