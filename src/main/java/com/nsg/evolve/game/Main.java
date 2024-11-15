@@ -8,11 +8,9 @@ import com.nsg.evolve.engine.gui.QuadGenerator;
 import com.nsg.evolve.engine.input.MouseInput;
 import com.nsg.evolve.engine.interfaces.IAppLogic;
 import com.nsg.evolve.engine.noise.PerlinNoise;
-import com.nsg.evolve.engine.physics.Physics;
 import com.nsg.evolve.engine.render.Render;
 import com.nsg.evolve.engine.render.object.Entity;
 import com.nsg.evolve.engine.render.object.Model;
-import com.nsg.evolve.engine.scene.Terrain;
 import com.nsg.evolve.engine.scene.*;
 import com.nsg.evolve.engine.scene.lighting.SceneLights;
 import com.nsg.evolve.engine.scene.lighting.lights.AmbientLight;
@@ -24,7 +22,9 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 import static com.nsg.evolve.engine.input.Interactions.selectEntity;
-import static com.nsg.evolve.game.Config.*;
+import static com.nsg.evolve.game.Config.Character.MOVEMENT_SPEED;
+import static com.nsg.evolve.game.Config.MOUSE_SENSITIVITY;
+import static com.nsg.evolve.game.Config.TERRAIN_SIZE;
 import static org.lwjgl.glfw.GLFW.*;
 
 public class Main implements IAppLogic {
@@ -33,7 +33,6 @@ public class Main implements IAppLogic {
     private Entity cubeEntity1;
     private Entity cubeEntity2;
     private boolean buttonClicked = false;
-    private Physics physics;
 
     public static void main(String[] args) {
         Main main = new Main();
@@ -54,10 +53,6 @@ public class Main implements IAppLogic {
 
     @Override
     public void init(Window window, Scene scene, Render render) {
-        physics = new Physics();
-        physics.getGravity().enabled = true;
-        physics.getTerrainCollisions().enabled = true;
-
         scene.getCamera().affectedByGravity = true;
 
         PerlinNoise noise = PerlinNoise.generateNoise(TERRAIN_SIZE,TERRAIN_SIZE,400,12);
@@ -135,9 +130,7 @@ public class Main implements IAppLogic {
         }
 
         if (window.isKeyPressed(GLFW_KEY_SPACE)) {
-            camera.moveUp(move);
-        } else if (window.isKeyPressed(GLFW_KEY_LEFT_SHIFT)) {
-            camera.moveDown(move);
+            camera.jump();
         }
 
         MouseInput mouseInput = window.getMouseInput();
@@ -158,7 +151,7 @@ public class Main implements IAppLogic {
 
     @Override
     public void update(Window window, Scene scene) {
-        physics.update(scene);
+        scene.getPhysics().update(scene);
 
         rotation += 1.5f;
         if (rotation > 360) {

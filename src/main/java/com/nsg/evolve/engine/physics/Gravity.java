@@ -5,12 +5,16 @@ import com.nsg.evolve.engine.scene.Scene;
 
 public class Gravity {
 
-    public boolean enabled = false;
-
+    public boolean enabled = true;
+    private Physics physics;
     private float g = 9.81f;
 
+    public Gravity(Physics physics) {
+        this.physics = physics;
+    }
+
     public void update(Scene scene) {
-        if (scene.getCamera().affectedByGravity) {
+        if (scene.getCamera().affectedByGravity && !physics.getTerrainCollisions().movedLastUpdate) {
             scene.getCamera().getVelocity().y -= g * Time.deltaTime;
         }
     }

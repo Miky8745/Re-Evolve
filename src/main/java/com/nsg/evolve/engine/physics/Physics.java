@@ -11,8 +11,8 @@ public class Physics {
     private TerrainCollisions terrainCollisions;
 
     public Physics() {
-        gravity = new Gravity();
-        terrainCollisions = new TerrainCollisions();
+        gravity = new Gravity(this);
+        terrainCollisions = new TerrainCollisions(this);
     }
 
     public void update(Scene scene) {

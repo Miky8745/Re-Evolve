@@ -1,5 +1,6 @@
 package com.nsg.evolve.engine.scene;
 
+import com.nsg.evolve.engine.physics.Physics;
 import com.nsg.evolve.engine.render.object.Entity;
 import com.nsg.evolve.engine.render.object.Model;
 import com.nsg.evolve.engine.render.object.cache.MaterialCache;
@@ -21,6 +22,7 @@ public class Scene {
     private Fog fog;
     private Entity selectedEntity;
     private MaterialCache materialCache;
+    private Physics physics;
 
     public Scene(int width, int height, BiomeType biomeType) {
         modelMap = new HashMap<>();
@@ -28,6 +30,7 @@ public class Scene {
         textureCache = new TextureCache();
         camera = new Camera(biomeType);
         materialCache = new MaterialCache();
+        physics = new Physics();
     }
 
     public void addEntity(Entity entity) {
@@ -97,5 +100,9 @@ public class Scene {
 
     public MaterialCache getMaterialCache() {
         return materialCache;
+    }
+
+    public Physics getPhysics() {
+        return physics;
     }
 }

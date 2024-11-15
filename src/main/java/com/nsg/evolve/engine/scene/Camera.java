@@ -5,6 +5,8 @@ import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
+import static com.nsg.evolve.game.Config.Character.JUMP_STRENGTH;
+
 public class Camera {
 
     private Vector3f position;
@@ -13,8 +15,9 @@ public class Camera {
     private Matrix4f invViewMatrix;
 
     public boolean affectedByGravity;
-    private Vector3f velocity;
 
+    private Vector3f velocity;
+    private boolean onGround;
     private BiomeType activeBiomeType;
 
     public Camera(BiomeType biomeType) {
@@ -26,6 +29,7 @@ public class Camera {
         affectedByGravity = false;
         velocity = new Vector3f(0,0,0);
         activeBiomeType = biomeType;
+        onGround = true;
     }
 
     public void addRotation(float pitch, float yaw) {
@@ -127,5 +131,20 @@ public class Camera {
 
     public void setActiveBiomeType(BiomeType activeBiomeType) {
         this.activeBiomeType = activeBiomeType;
+    }
+
+    public boolean isOnGround() {
+        return onGround;
+    }
+
+    public void setOnGround(boolean onGround) {
+        this.onGround = onGround;
+    }
+
+    public void jump() {
+        if (onGround) {
+            velocity.y += JUMP_STRENGTH;
+            onGround = false;
+        }
     }
 }

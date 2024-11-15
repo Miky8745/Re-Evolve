@@ -8,10 +8,17 @@ import com.nsg.evolve.game.terraingen.TerrainHeightMap;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
-import static com.nsg.evolve.game.Config.CHARACTER_HEIGHT;
+import static com.nsg.evolve.game.Config.Character.CHARACTER_HEIGHT;
 
 public class TerrainCollisions {
     public boolean enabled = true;
+    public boolean movedLastUpdate = false;
+
+    private Physics physics;
+
+    public TerrainCollisions(Physics physics) {
+        this.physics = physics;
+    }
 
     public void update(Scene scene) {
         Vector3f position = scene.getCamera().getPosition();
@@ -22,12 +29,18 @@ public class TerrainCollisions {
         try {
             height = calculateTerrainHeightAt(new Vector2f(position.x, position.z), scene.getCamera().getActiveBiomeType());
         } catch (IndexOutOfBoundsException e) {
+            movedLastUpdate = false;
+            scene.getCamera().setOnGround(false);
             return;
         }
 
-        if (position.y < height + CHARACTER_HEIGHT) {
+        if (position.y < height + CHARACTER_HEIGHT + CHARACTER_HEIGHT/3 && velocity.y < 0) {
             position.y = height + CHARACTER_HEIGHT;
             velocity.y = 0;
+            scene.getCamera().setOnGround(true);
+            movedLastUpdate = true;
+        } else {
+            movedLastUpdate = false;
         }
     }
 
