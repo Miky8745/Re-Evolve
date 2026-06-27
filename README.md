@@ -13,8 +13,6 @@ The **Evolve Game Engine** is a custom-built game engine designed to surpass my 
 
 The long-term vision for the Evolve engine includes the development of a 3D game that combines survival, crafting, and exploration elements, similar to popular titles in the genre but with a stronger emphasis on intricate, technical gameplay. The aim is to offer a more challenging, detail-oriented experience that rewards strategic thinking and mastery.
 
-**This was a private repo and I know did you got here?**
-
 ---
 
 Previous engine: https://github.com/Miky8745/Java-3D-NSGG-Game-Engine
